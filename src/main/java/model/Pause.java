@@ -1,9 +1,6 @@
 package model;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
@@ -11,6 +8,7 @@ import java.util.Date;
  * Created by lech0816 on 25.08.2016.
  */
 @XmlRootElement(name = "pause")
+@XmlType(propOrder={"start", "end"})
 public class Pause {
     private Date start;
     private Date end;
@@ -27,6 +25,15 @@ public class Pause {
         this.end = end;
     }
 
+    public Date getEnd() {
+        return end;
+    }
+    @XmlElement
+    @XmlJavaTypeAdapter(DateAdapter.class )
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
     public Date getStart() {
         return start;
     }
@@ -36,12 +43,5 @@ public class Pause {
         this.start = start;
     }
 
-    public Date getEnd() {
-        return end;
-    }
-    @XmlElement
-    @XmlJavaTypeAdapter(DateAdapter.class )
-    public void setEnd(Date end) {
-        this.end = end;
-    }
+
 }

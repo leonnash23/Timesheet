@@ -11,6 +11,7 @@ import java.util.List;
  * Created by lech0816 on 24.08.2016.
  */
 @XmlRootElement
+@XmlType(propOrder={"start", "end", "hoursWork","pauses"})
 @XmlSeeAlso({Date.class,Pauses.class})
 public class WorkDay implements Serializable {
 
@@ -38,14 +39,17 @@ public class WorkDay implements Serializable {
 //        workDay.setPauses(pauses);
 //        return workDay;
 //    }
+public Pauses getPauses() {
+    return pauses;
+}
 
-    public Date getStart() {
-        return start;
-    }
-    @XmlElement(name = "start", required = true)
-    @XmlJavaTypeAdapter( DateAdapter.class )
-    public void setStart(Date start) {
-        this.start = start;
+
+    @XmlElements({
+            @XmlElement(name="pause", type= Pause.class)
+    })
+    @XmlElementWrapper(name = "pauses")
+    public void setPauses(Pauses pauses) {
+        this.pauses = pauses;
     }
 
     public Date getEnd() {
@@ -57,18 +61,18 @@ public class WorkDay implements Serializable {
         this.end = end;
     }
 
-    public Pauses getPauses() {
-        return pauses;
+    public Date getStart() {
+        return start;
+    }
+    @XmlElement(name = "start", required = true)
+    @XmlJavaTypeAdapter( DateAdapter.class )
+    public void setStart(Date start) {
+        this.start = start;
     }
 
 
-    @XmlElements({
-            @XmlElement(name="pause", type= Pause.class)
-    })
-    @XmlElementWrapper(name = "pauses")
-    public void setPauses(Pauses pauses) {
-        this.pauses = pauses;
-    }
+
+
 
     public Double getHoursWork() {
         return hoursWork;
