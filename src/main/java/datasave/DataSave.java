@@ -2,10 +2,9 @@ package datasave;
 
 import event.*;
 import model.TimeSheet;
-import model.WorkDay;
 
-import java.io.*;
-import java.util.Collection;
+import javax.xml.bind.*;
+import java.io.File;
 
 /**
  * Created by lech0816 on 25.08.2016.
@@ -31,55 +30,22 @@ public class DataSave {
     }
 
     private void saveData() throws ErrorEvent {
-        ObjectOutputStream out = null;
         try {
-            File file = new File(fileName);
-            boolean created;
-            if(!file.exists()) {
-                created = file.createNewFile();
-            } else{
-                created = true;
-            }
-            if(created) {
-                out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(timeSheet);
-                out.flush();
-            }else {
-                throw new ErrorEvent("Can't create file!");
-            }
-        } catch (IOException e) {
+            JAXBContext jaxbContext = JAXBContext.newInstance( TimeSheet.class );
+            Marshaller jaxbMarshaller;
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
+            jaxbMarshaller.marshal( timeSheet, new File( "data.xml" ) );
+        } catch (PropertyException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if(out!=null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
     private void loadData(){
-        File file = new File(fileName);
-        if(file.getAbsoluteFile().exists()){
-            ObjectInputStream in = null;
-            try {
-                in = new ObjectInputStream(new FileInputStream(file));
-                timeSheet.addAll((Collection<? extends WorkDay>) in.readObject());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                if(in!=null){
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
+        File file = new File("data.xml");
+        if(file.getAbsoluteFile().exists()) {
+            timeSheet.addAll(JAXB.unmarshal(file, TimeSheet.class));
         }
     }
 
