@@ -34,18 +34,23 @@ public class View {
     }
 
     public void start(){
+        try {
+            observers.notifyObservers(new LoadEvent());
+        } catch (ErrorEvent errorEvent) {
+            errorEvent.printStackTrace();
+        }
         Scanner sc = new Scanner(System.in);
         boolean exit=false;
         while (!exit) {
             System.out.println("Print:");
-            System.out.println("0 — to exit");
-            System.out.println("1 — to get hours from last start or last work day");
-            System.out.println("2 — to start work");
-            System.out.println("3 — to pause work");
-            System.out.println("4 — to get today pause list");
-            System.out.println("5 — to resume work");
-            System.out.println("6 — to end work");
-            System.out.println("7 — to get list");
+            System.out.println("\t0 — to exit");
+            System.out.println("\t1 — to get hours from last start or last work day");
+            System.out.println("\t2 — to start work");
+            System.out.println("\t3 — to pause work");
+            System.out.println("\t4 — to get today pause list");
+            System.out.println("\t5 — to resume work");
+            System.out.println("\t6 — to end work");
+            System.out.println("\t7 — to get list");
             try {
                 switch (Integer.parseInt(sc.nextLine().trim())) {
                     case 0:

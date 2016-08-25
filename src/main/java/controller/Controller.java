@@ -1,9 +1,6 @@
 package controller;
 
-import event.ErrorEvent;
-import event.Event;
-import event.Observer;
-import event.Observers;
+import event.*;
 import model.TimeSheet;
 import model.WorkDay;
 
@@ -20,7 +17,7 @@ public class Controller {
     private Observers observers;
     private TimeSheet timeSheet;
 
-    public Controller(Observers observers, TimeSheet timeSheet){
+    public Controller(final Observers observers, TimeSheet timeSheet){
         this.observers = observers;
         this.timeSheet = timeSheet;
 
@@ -30,15 +27,19 @@ public class Controller {
                 switch (o.getType()){
                     case START:
                         startWork();
+                        observers.notifyObservers(new SaveEvent());
                         break;
                     case PAUSE:
                         pauseWork();
+                        observers.notifyObservers(new SaveEvent());
                         break;
                     case RESUME:
                         resumeWork();
+                        observers.notifyObservers(new SaveEvent());
                         break;
                     case END:
                         endWork();
+                        observers.notifyObservers(new SaveEvent());
                         break;
                     case CAL:
                         calculateHoursWork();

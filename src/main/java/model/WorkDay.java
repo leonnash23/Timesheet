@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by lech0816 on 24.08.2016.
  */
-public class WorkDay {
+public class WorkDay implements Serializable {
 
     private Date start;
     private Date end;
