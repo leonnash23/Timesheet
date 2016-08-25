@@ -12,7 +12,7 @@ import java.util.List;
  * Created by lech0816 on 24.08.2016.
  */
 public class Controller {
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    public static SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd EEEE HH:mm");
 
     private Observers observers;
     private TimeSheet timeSheet;
