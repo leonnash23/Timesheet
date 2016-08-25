@@ -1,10 +1,7 @@
 package controller;
 
 import event.*;
-import model.MyDate;
-import model.Pauses;
-import model.TimeSheet;
-import model.WorkDay;
+import model.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,17 +50,16 @@ public class Controller {
     }
 
     private void resumeWork() throws ErrorEvent {
-        MyDate[] date;
+        Pause date;
         date = timeSheet.getLastPause();
-        date[1] = new MyDate();
+        date.setEnd(new Date());
 
     }
 
     private void pauseWork() throws ErrorEvent {
         Pauses pauses;
             pauses = timeSheet.getLastWorkDay().getPauses();
-            MyDate[] date = new MyDate[2];
-            date[0] = new MyDate();
+            Pause date = new Pause(new Date());
             pauses.add(date);
 
     }
@@ -81,16 +77,16 @@ public class Controller {
             if(workday.getEnd()!=null) {
                 workLong = workday.getEnd().getTime() - workday.getStart().getTime();
                 Pauses pauses = workday.getPauses();
-                for (Date[] pause : pauses) {
-                    long pauseLong = pause[1].getTime() - pause[0].getTime();
+                for (Pause pause : pauses) {
+                    long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
                     workLong -= pauseLong;
                 }
             } else {
                 Date now = new Date();
                 workLong = now.getTime() - workday.getStart().getTime();
                 Pauses pauses = workday.getPauses();
-                for (Date[] pause : pauses) {
-                    long pauseLong = pause[1].getTime() - pause[0].getTime();
+                for (Pause pause : pauses) {
+                    long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
                     workLong -= pauseLong;
                 }
             }

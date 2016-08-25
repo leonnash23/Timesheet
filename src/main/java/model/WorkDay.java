@@ -42,7 +42,7 @@ public class WorkDay implements Serializable {
     public Date getStart() {
         return start;
     }
-    @XmlAttribute(name = "start", required = true)
+    @XmlElement(name = "start", required = true)
     @XmlJavaTypeAdapter( DateAdapter.class )
     public void setStart(Date start) {
         this.start = start;
@@ -51,7 +51,7 @@ public class WorkDay implements Serializable {
     public Date getEnd() {
         return end;
     }
-    @XmlAttribute(name = "end", required = true)
+    @XmlElement(name = "end", required = true)
     @XmlJavaTypeAdapter( DateAdapter.class )
     public void setEnd(Date end) {
         this.end = end;
@@ -62,7 +62,10 @@ public class WorkDay implements Serializable {
     }
 
 
-    @XmlElementWrapper(name = "pause")
+    @XmlElements({
+            @XmlElement(name="pause", type= Pause.class)
+    })
+    @XmlElementWrapper(name = "pauses")
     public void setPauses(Pauses pauses) {
         this.pauses = pauses;
     }
@@ -70,7 +73,7 @@ public class WorkDay implements Serializable {
     public Double getHoursWork() {
         return hoursWork;
     }
-    @XmlAttribute
+    @XmlElement
     public void setHoursWork(Double hoursWorked) {
         this.hoursWork = hoursWorked;
     }

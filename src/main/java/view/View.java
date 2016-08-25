@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import event.*;
+import model.Pause;
 import model.TimeSheet;
 import model.WorkDay;
 
@@ -66,16 +67,16 @@ public class View {
                         break;
                     case 3:
                         observers.notifyObservers(new PauseEvent());
-                        System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause()[0]));
+                        System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause().getStart()));
                         break;
                     case 4:
                         printPauseList();
                         break;
                     case 5:
                         observers.notifyObservers(new ResumeEvent());
-                        System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause()[1]));
-                        Date[] pause = timeSheet.getLastPause();
-                        System.out.println("Pause long:" + (pause[1].getTime() - pause[0].getTime()) / 60000.0 + " minutes");
+                        System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause().getEnd()));
+                        Pause pause = timeSheet.getLastPause();
+                        System.out.println("Pause long:" + (pause.getEnd().getTime() - pause.getStart().getTime()) / 60000.0 + " minutes");
                         break;
                     case 6:
                         observers.notifyObservers(new EndEvent());
@@ -106,15 +107,15 @@ public class View {
         WorkDay workDay = null;
             workDay = timeSheet.getLastWorkDay();
             int i =0;
-            for(Date[] pause:workDay.getPauses()){
+            for(Pause pause:workDay.getPauses()){
                 System.out.println("Pause #"+(++i)+":");
-                System.out.println("\tPause start:"+Controller.format.format(pause[0]));
-                if(pause[1]==null){
+                System.out.println("\tPause start:"+Controller.format.format(pause.getStart()));
+                if(pause.getEnd()==null){
                     System.out.println("\tPause end: pause not fineshed yet");
-                    System.out.println("\tPause long:"+(new Date().getTime()-pause[0].getTime())/60000+" minutes");
+                    System.out.println("\tPause long:"+(new Date().getTime()-pause.getStart().getTime())/60000+" minutes");
                 } else {
-                    System.out.println("\tPause end:"+Controller.format.format(pause[1]));
-                    System.out.println("\tPause long:"+(pause[1].getTime()-pause[0].getTime())/60000+" minutes");
+                    System.out.println("\tPause end:"+Controller.format.format(pause.getStart()));
+                    System.out.println("\tPause long:"+(pause.getEnd().getTime()-pause.getStart().getTime())/60000+" minutes");
                 }
 
                 System.out.println();

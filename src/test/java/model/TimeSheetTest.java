@@ -44,10 +44,10 @@ public class TimeSheetTest {
         timeSheet.add(new WorkDay(new Date(3)));
         timeSheet.add(new WorkDay(new Date(4)));
         Pauses pauses = new Pauses();
-        pauses.add(new MyDate[]{new MyDate(5),new MyDate(6)});
+        pauses.add(new Pause(new Date(5),new Date(6)));
         try {
             timeSheet.getLastWorkDay().setPauses(pauses);
-            Assert.assertEquals(timeSheet.getLastPause()[0].getTime(),5);
+            Assert.assertEquals(timeSheet.getLastPause().getStart().getTime(),5);
         } catch (ErrorEvent errorEvent) {
             try {
                 observers.notifyObservers(errorEvent);

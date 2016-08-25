@@ -1,10 +1,7 @@
 package controller;
 
 import event.*;
-import model.MyDate;
-import model.Pauses;
-import model.TimeSheet;
-import model.WorkDay;
+import model.*;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -63,7 +60,7 @@ public class ControllerTest {
         }
 
         try {
-            Assert.assertEquals(Controller.format.format(timeSheet.getLastPause()[0]),
+            Assert.assertEquals(Controller.format.format(timeSheet.getLastPause().getStart()),
                     Controller.format.format(new Date()));
         } catch (ErrorEvent errorEvent) {
             try {
@@ -85,10 +82,10 @@ public class ControllerTest {
             observers.notifyObservers(new StartEvent());
             observers.notifyObservers(new PauseEvent());
             observers.notifyObservers(new ResumeEvent());
-            MyDate[] pause;
+            Pause pause;
             pause = timeSheet.getLastPause();
-            Assert.assertEquals(Controller.format.format(pause[1]),Controller.format.format(new MyDate()));
-            Assert.assertEquals(Double.compare((pause[1].getTime()-pause[0].getTime())/60000,0),0);
+            Assert.assertEquals(Controller.format.format(pause.getEnd()),Controller.format.format(new Date()));
+            Assert.assertEquals(Double.compare((pause.getEnd().getTime()-pause.getStart().getTime())/60000,0),0);
         } catch (ErrorEvent errorEvent) {
             try {
                 observers.notifyObservers(errorEvent);
@@ -106,9 +103,7 @@ public class ControllerTest {
         Controller controller = new Controller(observers,timeSheet);
         WorkDay workDay = new WorkDay(new Date(0));
         workDay.setEnd(new Date(100*60*60*1000));
-        MyDate[] pause = new MyDate[2];
-        pause[0]=new MyDate(50*60*60*1000);
-        pause[1]=new MyDate(60*60*60*1000);
+        Pause pause = new Pause(new Date(50*60*60*1000),new Date(60*60*60*1000));
         Pauses pauses = new Pauses();
         pauses.add(pause);
         workDay.setPauses(pauses);

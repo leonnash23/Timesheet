@@ -24,7 +24,7 @@ public class TimeSheet extends ArrayList<WorkDay> {
 
     }
 
-    public MyDate[] getLastPause() throws ErrorEvent {
+    public Pause getLastPause() throws ErrorEvent {
         Pauses pauses = getLastWorkDay().getPauses();
         return pauses.get(pauses.size()-1);
     }
