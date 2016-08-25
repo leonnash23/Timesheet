@@ -2,9 +2,7 @@ package model;
 
 import event.ErrorEvent;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +12,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "Data")
 @XmlSeeAlso({WorkDay.class})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TimeSheet extends ArrayList<WorkDay> {
 
     public WorkDay getLastWorkDay() throws ErrorEvent {
@@ -25,8 +24,8 @@ public class TimeSheet extends ArrayList<WorkDay> {
 
     }
 
-    public Date[] getLastPause() throws ErrorEvent {
-        List<Date[]> pauses = getLastWorkDay().getPauses();
+    public MyDate[] getLastPause() throws ErrorEvent {
+        Pauses pauses = getLastWorkDay().getPauses();
         return pauses.get(pauses.size()-1);
     }
     @XmlElement(name = "WorkDays")

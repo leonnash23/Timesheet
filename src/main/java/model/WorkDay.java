@@ -11,12 +11,13 @@ import java.util.List;
  * Created by lech0816 on 24.08.2016.
  */
 @XmlRootElement
+@XmlSeeAlso({Date.class,Pauses.class})
 public class WorkDay implements Serializable {
 
     private Date start;
     private Date end;
 
-    private List<Date[]> pauses;
+    private Pauses pauses;
     private Double hoursWork;
 
     public WorkDay(){
@@ -25,18 +26,18 @@ public class WorkDay implements Serializable {
 
     public WorkDay(Date start){
         this.start = start;
-        this.pauses = new ArrayList<>();
+        this.pauses = new Pauses();
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        WorkDay workDay = new WorkDay(start);
-        workDay.setEnd(end);
-        ArrayList<Date[]> pauses = new ArrayList<>();
-        pauses.addAll(this.pauses);
-        workDay.setPauses(pauses);
-        return workDay;
-    }
+//    @Override
+//    protected Object clone() throws CloneNotSupportedException {
+//        WorkDay workDay = new WorkDay(start);
+//        workDay.setEnd(end);
+//        ArrayList<Date[]> pauses = new ArrayList<>();
+//        pauses.addAll(this.pauses);
+//        workDay.setPauses(pauses);
+//        return workDay;
+//    }
 
     public Date getStart() {
         return start;
@@ -56,14 +57,13 @@ public class WorkDay implements Serializable {
         this.end = end;
     }
 
-    public List<Date[]> getPauses() {
+    public Pauses getPauses() {
         return pauses;
     }
-    @XmlElements({
-            @XmlElement(name="pause", type= Date.class)
-    })
-    @XmlElementWrapper(name = "pauses")
-    public void setPauses(List<Date[]> pauses) {
+
+
+    @XmlElementWrapper(name = "pause")
+    public void setPauses(Pauses pauses) {
         this.pauses = pauses;
     }
 

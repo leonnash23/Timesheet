@@ -43,8 +43,8 @@ public class TimeSheetTest {
         timeSheet.add(new WorkDay(new Date(2)));
         timeSheet.add(new WorkDay(new Date(3)));
         timeSheet.add(new WorkDay(new Date(4)));
-        ArrayList<Date[]> pauses = new ArrayList<>();
-        pauses.add(new Date[]{new Date(5),new Date(6)});
+        Pauses pauses = new Pauses();
+        pauses.add(new MyDate[]{new MyDate(5),new MyDate(6)});
         try {
             timeSheet.getLastWorkDay().setPauses(pauses);
             Assert.assertEquals(timeSheet.getLastPause()[0].getTime(),5);
