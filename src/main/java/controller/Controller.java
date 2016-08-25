@@ -8,6 +8,7 @@ import model.WorkDay;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lech0816 on 24.08.2016.
@@ -29,6 +30,9 @@ public class Controller {
                     case START:
                         startWork();
                         break;
+                    case PAUSE:
+                        pauseWork();
+                        break;
                     case END:
                         endWork();
                         break;
@@ -41,14 +45,21 @@ public class Controller {
         });
     }
 
+    private void pauseWork() {
+        List<Date[]> pauses = timeSheet.getLastWorkDay().getPauses();
+        Date[] date = new Date[2];
+        date[0] = new Date();
+        pauses.add(date);
+    }
+
     private void endWork() {
-        timeSheet.getLast().setEnd(new Date());
+        timeSheet.getLastWorkDay().setEnd(new Date());
         calculateHoursWork();
     }
     private void calculateHoursWork(){
-        timeSheet.getLast().setHoursWork((
-                timeSheet.getLast().getEnd().getTime()
-                -timeSheet.getLast().getStart().getTime())/(1000.0*60*60));
+        timeSheet.getLastWorkDay().setHoursWork((
+                timeSheet.getLastWorkDay().getEnd().getTime()
+                -timeSheet.getLastWorkDay().getStart().getTime())/(1000.0*60*60));
     }
     private void startWork() {
         timeSheet.add(new WorkDay(new Date()));

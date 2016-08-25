@@ -11,7 +11,7 @@ public class WorkDay {
 
     private Date start;
     private Date end;
-    private List<Integer[][]> pauses;
+    private List<Date[]> pauses;
     private Double hoursWork;
 
     public WorkDay(Date start){
@@ -23,7 +23,7 @@ public class WorkDay {
     protected Object clone() throws CloneNotSupportedException {
         WorkDay workDay = new WorkDay(start);
         workDay.setEnd(end);
-        ArrayList<Integer[][]> pauses = new ArrayList<>();
+        ArrayList<Date[]> pauses = new ArrayList<>();
         pauses.addAll(this.pauses);
         workDay.setPauses(pauses);
         return workDay;
@@ -45,11 +45,11 @@ public class WorkDay {
         this.end = end;
     }
 
-    public List<Integer[][]> getPauses() {
+    public List<Date[]> getPauses() {
         return pauses;
     }
 
-    public void setPauses(List<Integer[][]> pauses) {
+    public void setPauses(List<Date[]> pauses) {
         this.pauses = pauses;
     }
 

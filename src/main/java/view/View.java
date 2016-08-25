@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 import event.EndEvent;
 import event.Observers;
+import event.PauseEvent;
 import event.StartEvent;
 import model.TimeSheet;
 import model.WorkDay;
@@ -40,12 +41,18 @@ public class View {
                     break;
                 case 1:
                     observers.notifyObservers(new StartEvent());
-                    System.out.println("Start time:" + Controller.format.format(timeSheet.getLast().getStart()));
+                    System.out.println("Start time:" + Controller.format.format(timeSheet.getLastWorkDay().getStart()));
                     break;
+                case 2:
+                    observers.notifyObservers(new PauseEvent());
+                    System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause()[0]));
+                    break;
+                case 3:
+                    observers.notifyObservers();
                 case 4:
                     observers.notifyObservers(new EndEvent());
-                    System.out.println("End time:" + Controller.format.format(timeSheet.getLast().getEnd()));
-                    System.out.println("Hours work:" + timeSheet.getLast().getHoursWork());
+                    System.out.println("End time:" + Controller.format.format(timeSheet.getLastWorkDay().getEnd()));
+                    System.out.println("Hours work:" + timeSheet.getLastWorkDay().getHoursWork());
                     break;
                 case 5:
                     printList();

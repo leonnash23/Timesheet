@@ -2,6 +2,7 @@ package controller;
 
 import event.CalculateEvent;
 import event.Observers;
+import event.PauseEvent;
 import event.StartEvent;
 import model.TimeSheet;
 import model.WorkDay;
@@ -20,7 +21,7 @@ public class ControllerTest {
         TimeSheet timeSheet = new TimeSheet();
         Controller controller = new Controller(observers,timeSheet);
         observers.notifyObservers(new StartEvent());
-        Assert.assertEquals(Controller.format.format(timeSheet.getLast().getStart()),
+        Assert.assertEquals(Controller.format.format(timeSheet.getLastWorkDay().getStart()),
                 Controller.format.format(new Date()));
     }
 
@@ -32,8 +33,19 @@ public class ControllerTest {
         TimeSheet timeSheet = new TimeSheet();
         Controller controller = new Controller(observers,timeSheet);
         timeSheet.add(new WorkDay(new Date(start)));
-        timeSheet.getLast().setEnd(new Date(end));
+        timeSheet.getLastWorkDay().setEnd(new Date(end));
         observers.notifyObservers(new CalculateEvent());
-        Assert.assertEquals(Double.compare(8.0,timeSheet.getLast().getHoursWork()),0);
+        Assert.assertEquals(Double.compare(8.0,timeSheet.getLastWorkDay().getHoursWork()),0);
+    }
+
+    @Test
+    public void pauseWorkTest(){
+        Observers observers = new Observers();
+        TimeSheet timeSheet = new TimeSheet();
+        Controller controller = new Controller(observers,timeSheet);
+        observers.notifyObservers(new StartEvent());
+        observers.notifyObservers(new PauseEvent());
+        Assert.assertEquals(Controller.format.format(timeSheet.getLastPause()[0]),
+                Controller.format.format(new Date()));
     }
 }
