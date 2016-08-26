@@ -107,7 +107,7 @@ public class Controller {
                 workLong = new Date().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
-                    long pauseLong = new Date().getTime() - pause.getStart().getTime();
+                    long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
                     workLong -= pauseLong;
                 }
             }
