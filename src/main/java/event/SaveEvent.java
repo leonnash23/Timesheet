@@ -5,7 +5,7 @@ package event;
  */
 public class SaveEvent implements Event {
     @Override
-    public EventTypes getType() {
+    public final EventTypes getType() {
         return EventTypes.SAVE;
     }
 }

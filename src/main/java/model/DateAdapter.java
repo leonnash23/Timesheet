@@ -11,11 +11,11 @@ import java.util.Date;
  */
 class DateAdapter extends XmlAdapter<String, Date> {
 
-    private SimpleDateFormat formatter = Controller.format;
+    private SimpleDateFormat formatter = Controller.FORMAT;
 
     @Override
-    public Date unmarshal(String v) throws Exception {
-        if(!v.equals("null")) {
+    public Date unmarshal(final String v) throws Exception {
+        if (!v.equals("null")) {
             java.util.Date parse = formatter.parse(v);
             return new Date(parse.getTime());
         } else {
@@ -24,10 +24,10 @@ class DateAdapter extends XmlAdapter<String, Date> {
     }
 
     @Override
-    public String marshal(Date v) throws Exception {
-        if(v!=null) {
+    public String marshal(final Date v) throws Exception {
+        if (v != null) {
             return formatter.format(v);
-        }else {
+        } else {
             return null;
         }
     }

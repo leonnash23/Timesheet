@@ -63,24 +63,24 @@ public class View {
                         break;
                     case 2:
                         observers.notifyObservers(new StartEvent());
-                        System.out.println("Start time:" + Controller.format.format(timeSheet.getLastWorkDay().getStart()));
+                        System.out.println("Start time:" + Controller.FORMAT.format(timeSheet.getLastWorkDay().getStart()));
                         break;
                     case 3:
                         observers.notifyObservers(new PauseEvent());
-                        System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause().getStart()));
+                        System.out.println("Pause time:" + Controller.FORMAT.format(timeSheet.getLastPause().getStart()));
                         break;
                     case 4:
                         printPauseList();
                         break;
                     case 5:
                         observers.notifyObservers(new ResumeEvent());
-                        System.out.println("Pause time:" + Controller.format.format(timeSheet.getLastPause().getEnd()));
+                        System.out.println("Pause time:" + Controller.FORMAT.format(timeSheet.getLastPause().getEnd()));
                         Pause pause = timeSheet.getLastPause();
                         System.out.println("Pause long:" + (pause.getEnd().getTime() - pause.getStart().getTime()) / 60000.0 + " minutes");
                         break;
                     case 6:
                         observers.notifyObservers(new EndEvent());
-                        System.out.println("End time:" + Controller.format.format(timeSheet.getLastWorkDay().getEnd()));
+                        System.out.println("End time:" + Controller.FORMAT.format(timeSheet.getLastWorkDay().getEnd()));
                         System.out.println("Hours work:" + timeSheet.getLastWorkDay().getHoursWork());
                         break;
                     case 7:
@@ -108,7 +108,7 @@ public class View {
         System.out.println(timeSheet.getLastWorkDay().getHoursWork() + " hours worked");
         long milis = 8*60*60*1000-(long)(timeSheet.getLastWorkDay().getHoursWork()*60*60*1000);
         System.out.println("8 hours work day will finished at "+
-                Controller.format.format(new Date(new Date().getTime()+milis)));
+                Controller.FORMAT.format(new Date(new Date().getTime()+milis)));
     }
 
     private void printPauseList() throws ErrorEvent {
@@ -117,12 +117,12 @@ public class View {
             int i =0;
             for(Pause pause:workDay.getPauses()){
                 System.out.println("Pause #"+(++i)+":");
-                System.out.println("\tPause start:"+Controller.format.format(pause.getStart()));
+                System.out.println("\tPause start:"+Controller.FORMAT.format(pause.getStart()));
                 if(pause.getEnd()==null){
                     System.out.println("\tPause end: pause not fineshed yet");
                     System.out.println("\tPause long:"+(new Date().getTime()-pause.getStart().getTime())/60000+" minutes");
                 } else {
-                    System.out.println("\tPause end:"+Controller.format.format(pause.getEnd()));
+                    System.out.println("\tPause end:"+Controller.FORMAT.format(pause.getEnd()));
                     System.out.println("\tPause long:"+(pause.getEnd().getTime()-pause.getStart().getTime())/60000+" minutes");
                 }
 
@@ -137,11 +137,11 @@ public class View {
             System.out.println("List is empty.");
         } else {
             for (WorkDay workDay : timeSheet) {
-                System.out.println(Controller.format.format(workDay.getStart()));
+                System.out.println(Controller.FORMAT.format(workDay.getStart()));
                 if (workDay.getEnd() == null) {
                     System.out.println("Work day not finished yet.");
                 } else {
-                    System.out.println(Controller.format.format(workDay.getEnd()));
+                    System.out.println(Controller.FORMAT.format(workDay.getEnd()));
                 }
                 System.out.println(workDay.getHoursWork());
                 System.out.println("-----------------------");

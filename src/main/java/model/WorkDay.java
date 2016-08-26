@@ -1,18 +1,21 @@
 package model;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by lech0816 on 24.08.2016.
  */
 @XmlRootElement
-@XmlType(propOrder={"start", "end", "hoursWork","pauses"})
-@XmlSeeAlso({Date.class,Pauses.class})
+@XmlType(propOrder = {"start", "end", "hoursWork", "pauses"})
+@XmlSeeAlso({Date.class, Pauses.class})
 public class WorkDay implements Serializable {
 
     private Date start;
@@ -21,11 +24,11 @@ public class WorkDay implements Serializable {
     private Pauses pauses;
     private Double hoursWork;
 
-    public WorkDay(){
+    public WorkDay() {
 
     }
 
-    public WorkDay(Date start){
+    public WorkDay(final Date start) {
         this.start = start;
         this.pauses = new Pauses();
     }
@@ -39,34 +42,34 @@ public class WorkDay implements Serializable {
 //        workDay.setPauses(pauses);
 //        return workDay;
 //    }
-public Pauses getPauses() {
+public final Pauses getPauses() {
     return pauses;
 }
 
 
     @XmlElements({
-            @XmlElement(name="pause", type= Pause.class)
+            @XmlElement(name = "pause", type = Pause.class)
     })
     @XmlElementWrapper(name = "pauses")
-    public void setPauses(Pauses pauses) {
+    public final void setPauses(final Pauses pauses) {
         this.pauses = pauses;
     }
 
-    public Date getEnd() {
+    public final Date getEnd() {
         return end;
     }
     @XmlElement(name = "end", required = true)
-    @XmlJavaTypeAdapter( DateAdapter.class )
-    public void setEnd(Date end) {
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    public final void setEnd(final Date end) {
         this.end = end;
     }
 
-    public Date getStart() {
+    public final Date getStart() {
         return start;
     }
     @XmlElement(name = "start", required = true)
-    @XmlJavaTypeAdapter( DateAdapter.class )
-    public void setStart(Date start) {
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    public final void setStart(final Date start) {
         this.start = start;
     }
 
@@ -74,11 +77,11 @@ public Pauses getPauses() {
 
 
 
-    public Double getHoursWork() {
+    public final Double getHoursWork() {
         return hoursWork;
     }
     @XmlElement
-    public void setHoursWork(Double hoursWorked) {
+    public final void setHoursWork(final Double hoursWorked) {
         this.hoursWork = hoursWorked;
     }
 }

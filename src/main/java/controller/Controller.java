@@ -1,29 +1,37 @@
 package controller;
 
-import event.*;
-import model.*;
+import event.Observers;
+import event.Observer;
+import event.ErrorEvent;
+import event.Event;
+import event.SaveEvent;
+
+import model.Pause;
+import model.Pauses;
+import model.TimeSheet;
+import model.WorkDay;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by lech0816 on 24.08.2016.
  */
 public class Controller {
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd EEEE HH:mm");
+    public final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy.MM.dd EEEE HH:mm");
+    private final Double CONVERT_MILLISECONDS_TO_HOURS = 1000.0 * 60 * 60;
 
     private Observers observers;
     private TimeSheet timeSheet;
 
-    public Controller(final Observers observers, TimeSheet timeSheet){
+    public Controller(final Observers observers, TimeSheet timeSheet) {
         this.observers = observers;
         this.timeSheet = timeSheet;
 
         observers.addListners(new Observer() {
             @Override
-            public void notifyEvent(Event o) throws ErrorEvent {
-                switch (o.getType()){
+            public void notifyEvent(final Event o) throws ErrorEvent {
+                switch (o.getType()) {
                     case START:
                         startWork();
                         observers.notifyObservers(new SaveEvent());
@@ -73,16 +81,16 @@ public class Controller {
 
     }
 
-    private void calculateHoursWork(WorkDay workDay) throws ErrorEvent {
+    private void calculateHoursWork(final WorkDay workDay) throws ErrorEvent {
             long workLong = 0;
-            if(workDay.getEnd()!=null) {
+            if (workDay.getEnd() != null) {
                 workLong = workDay.getEnd().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
                     long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
                     workLong -= pauseLong;
                 }
-            } else if(workDay == timeSheet.getLastWorkDay()){
+            } else if (workDay == timeSheet.getLastWorkDay()) {
                 workLong = new Date().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
@@ -90,7 +98,7 @@ public class Controller {
                     workLong -= pauseLong;
                 }
             }
-        workDay.setHoursWork(workLong/(1000.0*60*60));
+        workDay.setHoursWork(workLong / CONVERT_MILLISECONDS_TO_HOURS);
     }
 
     private void calculateHoursWorkLast() throws ErrorEvent {
@@ -98,9 +106,10 @@ public class Controller {
     }
 
     private void calculateHoursWorkAll() throws ErrorEvent {
-        for(WorkDay workDay:timeSheet){
-            if(workDay==timeSheet.getLastWorkDay())
+        for (WorkDay workDay:timeSheet) {
+            if (workDay == timeSheet.getLastWorkDay()) {
                 continue;
+            }
             calculateHoursWork(workDay);
         }
         observers.notifyObservers(new SaveEvent());
@@ -110,11 +119,11 @@ public class Controller {
         timeSheet.add(new WorkDay(new Date()));
     }
 
-    public void setObservers(Observers observers) {
+    public void setObservers(final Observers observers) {
         this.observers = observers;
     }
 
-    public void setTimeSheet(TimeSheet timeSheet) {
+    public void setTimeSheet(final TimeSheet timeSheet) {
         this.timeSheet = timeSheet;
     }
 

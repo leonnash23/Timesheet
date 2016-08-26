@@ -5,7 +5,7 @@ package event;
  */
 public class LoadEvent implements Event {
     @Override
-    public EventTypes getType() {
+    public final EventTypes getType() {
         return EventTypes.LOAD;
     }
 }

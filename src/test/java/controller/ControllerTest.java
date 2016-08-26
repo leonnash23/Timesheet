@@ -5,7 +5,6 @@ import model.*;
 import org.junit.Test;
 import org.junit.Assert;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -19,8 +18,8 @@ public class ControllerTest {
         Controller controller = new Controller(observers,timeSheet);
         try {
             observers.notifyObservers(new StartEvent());
-            Assert.assertEquals(Controller.format.format(timeSheet.getLastWorkDay().getStart()),
-                    Controller.format.format(new Date()));
+            Assert.assertEquals(Controller.FORMAT.format(timeSheet.getLastWorkDay().getStart()),
+                    Controller.FORMAT.format(new Date()));
         } catch (ErrorEvent errorEvent) {
             errorEvent.printStackTrace();
         }
@@ -60,8 +59,8 @@ public class ControllerTest {
         }
 
         try {
-            Assert.assertEquals(Controller.format.format(timeSheet.getLastPause().getStart()),
-                    Controller.format.format(new Date()));
+            Assert.assertEquals(Controller.FORMAT.format(timeSheet.getLastPause().getStart()),
+                    Controller.FORMAT.format(new Date()));
         } catch (ErrorEvent errorEvent) {
             try {
                 observers.notifyObservers(errorEvent);
@@ -84,7 +83,7 @@ public class ControllerTest {
             observers.notifyObservers(new ResumeEvent());
             Pause pause;
             pause = timeSheet.getLastPause();
-            Assert.assertEquals(Controller.format.format(pause.getEnd()),Controller.format.format(new Date()));
+            Assert.assertEquals(Controller.FORMAT.format(pause.getEnd()),Controller.FORMAT.format(new Date()));
             Assert.assertEquals(Double.compare((pause.getEnd().getTime()-pause.getStart().getTime())/60000,0),0);
         } catch (ErrorEvent errorEvent) {
             try {

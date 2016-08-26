@@ -5,15 +5,15 @@ package event;
  */
 public class ErrorEvent extends Exception implements Event {
 
-    public ErrorEvent(){
+    public ErrorEvent() {
         super();
     }
-    public ErrorEvent(String message){
+    public ErrorEvent(String message) {
         super(message);
     }
 
     @Override
-    public EventTypes getType() {
+    public final EventTypes getType() {
         return EventTypes.ERROR;
     }
 }
