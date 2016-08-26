@@ -37,6 +37,7 @@ public class View {
     public void start(){
         try {
             observers.notifyObservers(new LoadEvent());
+            observers.notifyObservers(new CalculateAllEvent());
         } catch (ErrorEvent errorEvent) {
             errorEvent.printStackTrace();
         }

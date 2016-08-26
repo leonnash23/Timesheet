@@ -41,7 +41,10 @@ public class Controller {
                         observers.notifyObservers(new SaveEvent());
                         break;
                     case CAL:
-                        calculateHoursWork();
+                        calculateHoursWorkLast();
+                        break;
+                    case CALALL:
+                        calculateHoursWorkAll();
                         break;
                 }
 
@@ -66,34 +69,33 @@ public class Controller {
 
     private void endWork() throws ErrorEvent {
             timeSheet.getLastWorkDay().setEnd(new Date());
-            calculateHoursWork();
+            calculateHoursWorkLast();
 
     }
-    private void calculateHoursWork() throws ErrorEvent {
-        WorkDay workday;
 
-            workday = timeSheet.getLastWorkDay();
+    private void calculateHoursWork(WorkDay workDay) throws ErrorEvent {
             long workLong;
-            if(workday.getEnd()!=null) {
-                workLong = workday.getEnd().getTime() - workday.getStart().getTime();
-                Pauses pauses = workday.getPauses();
+            if(workDay.getEnd()!=null) {
+                workLong = workDay.getEnd().getTime() - workDay.getStart().getTime();
+                Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
                     long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
                     workLong -= pauseLong;
                 }
-            } else {
-                Date now = new Date();
-                workLong = now.getTime() - workday.getStart().getTime();
-                Pauses pauses = workday.getPauses();
-                for (Pause pause : pauses) {
-                    long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
-                    workLong -= pauseLong;
-                }
+                workDay.setHoursWork(workLong/(1000.0*60*60));
             }
-            workday.setHoursWork(workLong/(1000.0*60*60));
-
-
     }
+
+    private void calculateHoursWorkLast() throws ErrorEvent {
+        calculateHoursWork(timeSheet.getLastWorkDay());
+    }
+
+    private void calculateHoursWorkAll() throws ErrorEvent {
+        for(WorkDay workDay:timeSheet){
+            calculateHoursWork(workDay);
+        }
+    }
+
     private void startWork() {
         timeSheet.add(new WorkDay(new Date()));
     }
