@@ -61,6 +61,11 @@ public class Controller {
     }
 
     private void resumeWork() throws ErrorEvent {
+        if (timeSheet.getLastWorkDay().getPauses().size() > 0
+                && timeSheet.getLastPause().getEnd() != null
+                || timeSheet.getLastWorkDay().getPauses().size() == 0) {
+            throw new ErrorEvent("Pause not started!");
+        }
         Pause date;
         date = timeSheet.getLastPause();
         date.setEnd(new Date());
@@ -68,7 +73,7 @@ public class Controller {
     }
 
     private void pauseWork() throws ErrorEvent {
-        if (timeSheet.getLastWorkDay().getPauses().size()>0 && timeSheet.getLastPause().getEnd()==null) {
+        if (timeSheet.getLastWorkDay().getPauses().size()>0 && timeSheet.getLastPause().getEnd() == null) {
             throw new ErrorEvent("Last pause not fineshed!");
         }
         Pauses pauses;
@@ -79,6 +84,11 @@ public class Controller {
     }
 
     private void endWork() throws ErrorEvent {
+        if (timeSheet.size() > 0
+                && timeSheet.getLastWorkDay().getEnd() != null
+                || timeSheet.size() == 0) {
+            throw new ErrorEvent("Work day not started!");
+        }
             timeSheet.getLastWorkDay().setEnd(new Date());
             calculateHoursWorkLast();
 
