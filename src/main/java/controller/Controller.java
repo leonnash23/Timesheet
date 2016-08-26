@@ -103,6 +103,7 @@ public class Controller {
                 continue;
             calculateHoursWork(workDay);
         }
+        observers.notifyObservers(new SaveEvent());
     }
 
     private void startWork() {
