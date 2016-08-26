@@ -74,7 +74,7 @@ public class Controller {
     }
 
     private void calculateHoursWork(WorkDay workDay) throws ErrorEvent {
-            long workLong;
+            long workLong = 0;
             if(workDay.getEnd()!=null) {
                 workLong = workDay.getEnd().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
@@ -82,8 +82,15 @@ public class Controller {
                     long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
                     workLong -= pauseLong;
                 }
-                workDay.setHoursWork(workLong/(1000.0*60*60));
+            } else if(workDay == timeSheet.getLastWorkDay()){
+                workLong = new Date().getTime() - workDay.getStart().getTime();
+                Pauses pauses = workDay.getPauses();
+                for (Pause pause : pauses) {
+                    long pauseLong = new Date().getTime() - pause.getStart().getTime();
+                    workLong -= pauseLong;
+                }
             }
+        workDay.setHoursWork(workLong/(1000.0*60*60));
     }
 
     private void calculateHoursWorkLast() throws ErrorEvent {
@@ -92,6 +99,8 @@ public class Controller {
 
     private void calculateHoursWorkAll() throws ErrorEvent {
         for(WorkDay workDay:timeSheet){
+            if(workDay==timeSheet.getLastWorkDay())
+                continue;
             calculateHoursWork(workDay);
         }
     }

@@ -59,8 +59,7 @@ public class View {
                         exit = true;
                         break;
                     case 1:
-                        observers.notifyObservers(new CalculateEvent());
-                        System.out.println(timeSheet.getLastWorkDay().getHoursWork() + " hours worked");
+                        printCalculateTime();
                         break;
                     case 2:
                         observers.notifyObservers(new StartEvent());
@@ -102,6 +101,14 @@ public class View {
             }
         }
 
+    }
+
+    private void printCalculateTime() throws ErrorEvent {
+        observers.notifyObservers(new CalculateEvent());
+        System.out.println(timeSheet.getLastWorkDay().getHoursWork() + " hours worked");
+        long milis = 8*60*60*1000-(long)(timeSheet.getLastWorkDay().getHoursWork()*60*60*1000);
+        System.out.println("8 hours work day will finished at "+
+                Controller.format.format(new Date(new Date().getTime()+milis)));
     }
 
     private void printPauseList() throws ErrorEvent {
