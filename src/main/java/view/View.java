@@ -114,7 +114,7 @@ public class View {
                     System.out.println("\tPause end: pause not fineshed yet");
                     System.out.println("\tPause long:"+(new Date().getTime()-pause.getStart().getTime())/60000+" minutes");
                 } else {
-                    System.out.println("\tPause end:"+Controller.format.format(pause.getStart()));
+                    System.out.println("\tPause end:"+Controller.format.format(pause.getEnd()));
                     System.out.println("\tPause long:"+(pause.getEnd().getTime()-pause.getStart().getTime())/60000+" minutes");
                 }
 
