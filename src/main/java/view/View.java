@@ -1,7 +1,18 @@
 package view;
 
 import controller.Controller;
-import event.*;
+import event.Observer;
+import event.Observers;
+import event.EventTypes;
+import event.Event;
+import event.LoadEvent;
+import event.CalculateAllEvent;
+import event.ErrorEvent;
+import event.StartEvent;
+import event.PauseEvent;
+import event.ResumeEvent;
+import event.EndEvent;
+import event.CalculateEvent;
 import model.Pause;
 import model.TimeSheet;
 import model.WorkDay;
@@ -14,27 +25,32 @@ import java.util.Scanner;
  */
 public class View {
 
+    private final double MILLISECONDS_IN_MINUTES = 60000.0;
+    private final long MILLISECONDS_IN_MINUTES_LONG = 60000;
+    private final long MILLISECONDS_IN_HOURS = (long) (MILLISECONDS_IN_MINUTES*60);
+    private final long EIGHT_HOURS_IN_MILLISECONDS = 8 * 60 * 60 * 1000;
+
     private Observers observers;
     private TimeSheet timeSheet;
 
-    public View(Observers observers,TimeSheet timeSheet){
+    public View(final Observers observers, final TimeSheet timeSheet) {
         this.observers = observers;
         this.timeSheet = timeSheet;
         this.observers.addListners(new Observer() {
             @Override
-            public void notifyEvent(Event o) {
-                if(o.getType()==EventTypes.ERROR){
-                    printError(((Exception)o).getMessage());
+            public void notifyEvent(final Event o) {
+                if (o.getType() == EventTypes.ERROR) {
+                    printError(((Exception) o).getMessage());
                 }
             }
         });
     }
 
-    private void printError(String message) {
-        System.err.println("Error:"+message);
+    private void printError(final String message) {
+        System.err.println("Error:" + message);
     }
 
-    public void start(){
+    public final void start() {
         try {
             observers.notifyObservers(new LoadEvent());
             observers.notifyObservers(new CalculateAllEvent());
@@ -42,7 +58,7 @@ public class View {
             errorEvent.printStackTrace();
         }
         Scanner sc = new Scanner(System.in);
-        boolean exit=false;
+        boolean exit = false;
         while (!exit) {
             System.out.println("Print:");
             System.out.println("\t0 — to exit");
@@ -63,25 +79,31 @@ public class View {
                         break;
                     case 2:
                         observers.notifyObservers(new StartEvent());
-                        System.out.println("Start time:" + Controller.FORMAT.format(timeSheet.getLastWorkDay().getStart()));
+                        System.out.println("Start time:"
+                                + Controller.FORMAT.format(timeSheet.getLastWorkDay().getStart()));
                         break;
                     case 3:
                         observers.notifyObservers(new PauseEvent());
-                        System.out.println("Pause time:" + Controller.FORMAT.format(timeSheet.getLastPause().getStart()));
+                        System.out.println("Pause time:"
+                                + Controller.FORMAT.format(timeSheet.getLastPause().getStart()));
                         break;
                     case 4:
                         printPauseList();
                         break;
                     case 5:
                         observers.notifyObservers(new ResumeEvent());
-                        System.out.println("Pause time:" + Controller.FORMAT.format(timeSheet.getLastPause().getEnd()));
+                        System.out.println("Pause time:"
+                                + Controller.FORMAT.format(timeSheet.getLastPause().getEnd()));
                         Pause pause = timeSheet.getLastPause();
-                        System.out.println("Pause long:" + (pause.getEnd().getTime() - pause.getStart().getTime()) / 60000.0 + " minutes");
+                        System.out.println("Pause long:"
+                                + (pause.getEnd().getTime() - pause.getStart().getTime()) / MILLISECONDS_IN_MINUTES + " minutes");
                         break;
                     case 6:
                         observers.notifyObservers(new EndEvent());
-                        System.out.println("End time:" + Controller.FORMAT.format(timeSheet.getLastWorkDay().getEnd()));
-                        System.out.println("Hours work:" + timeSheet.getLastWorkDay().getHoursWork());
+                        System.out.println("End time:"
+                                + Controller.FORMAT.format(timeSheet.getLastWorkDay().getEnd()));
+                        System.out.println("Hours work:"
+                                + timeSheet.getLastWorkDay().getHoursWork());
                         break;
                     case 7:
                         printList();
@@ -90,7 +112,7 @@ public class View {
                         System.err.println("Unsupported command!");
 
                 }
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.err.println("Wrong input!");
             } catch (ErrorEvent errorEvent) {
                 try {
@@ -106,24 +128,31 @@ public class View {
     private void printCalculateTime() throws ErrorEvent {
         observers.notifyObservers(new CalculateEvent());
         System.out.println(timeSheet.getLastWorkDay().getHoursWork() + " hours worked");
-        long milis = 8*60*60*1000-(long)(timeSheet.getLastWorkDay().getHoursWork()*60*60*1000);
-        System.out.println("8 hours work day will finished at "+
-                Controller.FORMAT.format(new Date(new Date().getTime()+milis)));
+        long milis = EIGHT_HOURS_IN_MILLISECONDS - (long) (timeSheet.getLastWorkDay().getHoursWork() * MILLISECONDS_IN_HOURS);
+        System.out.println("8 hours work day will finished at "
+                + Controller.FORMAT.format(new Date(new Date().getTime()
+                        + milis)));
     }
 
     private void printPauseList() throws ErrorEvent {
         WorkDay workDay = null;
             workDay = timeSheet.getLastWorkDay();
-            int i =0;
-            for(Pause pause:workDay.getPauses()){
-                System.out.println("Pause #"+(++i)+":");
-                System.out.println("\tPause start:"+Controller.FORMAT.format(pause.getStart()));
-                if(pause.getEnd()==null){
+            int i = 0;
+            for (Pause pause:workDay.getPauses()) {
+                System.out.println("Pause #" + (++i) + ":");
+                System.out.println("\tPause start:"
+                        + Controller.FORMAT.format(pause.getStart()));
+                if (pause.getEnd() == null) {
                     System.out.println("\tPause end: pause not fineshed yet");
-                    System.out.println("\tPause long:"+(new Date().getTime()-pause.getStart().getTime())/60000+" minutes");
+                    System.out.println("\tPause long:"
+                            + (new Date().getTime()
+                            - pause.getStart().getTime()) / MILLISECONDS_IN_MINUTES_LONG + " minutes");
                 } else {
-                    System.out.println("\tPause end:"+Controller.FORMAT.format(pause.getEnd()));
-                    System.out.println("\tPause long:"+(pause.getEnd().getTime()-pause.getStart().getTime())/60000+" minutes");
+                    System.out.println("\tPause end:"
+                            + Controller.FORMAT.format(pause.getEnd()));
+                    System.out.println("\tPause long:"
+                            + (pause.getEnd().getTime() - pause.getStart().getTime())
+                            / MILLISECONDS_IN_MINUTES_LONG + " minutes");
                 }
 
                 System.out.println();
@@ -132,8 +161,8 @@ public class View {
 
     }
 
-    private void printList(){
-        if(timeSheet.size()==0){
+    private void printList() {
+        if (timeSheet.size() == 0) {
             System.out.println("List is empty.");
         } else {
             for (WorkDay workDay : timeSheet) {
@@ -150,11 +179,11 @@ public class View {
         }
     }
 
-    public void setObservers(Observers observers) {
+    public final void setObservers(final Observers observers) {
         this.observers = observers;
     }
 
-    public void setTimeSheet(TimeSheet timeSheet) {
+    public final void setTimeSheet(final TimeSheet timeSheet) {
         this.timeSheet = timeSheet;
     }
 }
