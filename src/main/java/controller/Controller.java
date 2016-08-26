@@ -68,10 +68,13 @@ public class Controller {
     }
 
     private void pauseWork() throws ErrorEvent {
+        if (timeSheet.getLastWorkDay().getPauses().size()>0 && timeSheet.getLastPause().getEnd()==null) {
+            throw new ErrorEvent("Last pause not fineshed!");
+        }
         Pauses pauses;
-            pauses = timeSheet.getLastWorkDay().getPauses();
-            Pause date = new Pause(new Date());
-            pauses.add(date);
+        pauses = timeSheet.getLastWorkDay().getPauses();
+        Pause date = new Pause(new Date());
+        pauses.add(date);
 
     }
 
