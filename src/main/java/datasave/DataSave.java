@@ -19,12 +19,10 @@ import java.io.File;
  */
 public class DataSave {
     private TimeSheet timeSheet;
-    private Observers observers;
     private final String FILE_NAME = "data.xml";
 
     public DataSave(final TimeSheet timeSheet, final Observers observers) {
         this.timeSheet = timeSheet;
-        this.observers = observers;
         observers.addListners(new Observer() {
             @Override
             public void notifyEvent(Event o) throws ErrorEvent {

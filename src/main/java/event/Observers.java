@@ -1,7 +1,6 @@
 package event;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by lech0816 on 24.08.2016.
