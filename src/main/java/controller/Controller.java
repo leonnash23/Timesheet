@@ -115,7 +115,10 @@ public class Controller {
         observers.notifyObservers(new SaveEvent());
     }
 
-    private void startWork() {
+    private void startWork() throws ErrorEvent {
+        if (timeSheet.size()>0 && timeSheet.getLastWorkDay().getEnd() == null) {
+            throw new ErrorEvent("Last work day not fineshed!");
+        }
         timeSheet.add(new WorkDay(new Date()));
     }
 
