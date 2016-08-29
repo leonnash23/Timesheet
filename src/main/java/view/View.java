@@ -166,13 +166,13 @@ public class View {
             System.out.println("List is empty.");
         } else {
             for (WorkDay workDay : timeSheet) {
-                System.out.println(Controller.FORMAT.format(workDay.getStart()));
+                System.out.println("Started at: "+Controller.FORMAT.format(workDay.getStart()));
                 if (workDay.getEnd() == null) {
                     System.out.println("Work day not finished yet.");
                 } else {
-                    System.out.println(Controller.FORMAT.format(workDay.getEnd()));
+                    System.out.println("Ended at: "+Controller.FORMAT.format(workDay.getEnd()));
                 }
-                System.out.println(workDay.getHoursWork());
+                System.out.println("Hours worked: "+workDay.getHoursWork());
                 System.out.println("-----------------------");
                 System.out.println();
             }
