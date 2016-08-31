@@ -179,11 +179,4 @@ public class View {
         }
     }
 
-    public final void setObservers(final Observers observers) {
-        this.observers = observers;
-    }
-
-    public final void setTimeSheet(final TimeSheet timeSheet) {
-        this.timeSheet = timeSheet;
-    }
 }
