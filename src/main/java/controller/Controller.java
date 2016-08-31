@@ -134,6 +134,4 @@ public class Controller {
         }
         timeSheet.add(new WorkDay(new Date()));
     }
-
-
 }
