@@ -135,13 +135,5 @@ public class Controller {
         timeSheet.add(new WorkDay(new Date()));
     }
 
-    public void setObservers(final Observers observers) {
-        this.observers = observers;
-    }
-
-    public void setTimeSheet(final TimeSheet timeSheet) {
-        this.timeSheet = timeSheet;
-    }
-
 
 }
