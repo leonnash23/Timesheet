@@ -33,15 +33,6 @@ public class WorkDay implements Serializable {
         this.pauses = new Pauses();
     }
 
-//    @Override
-//    protected Object clone() throws CloneNotSupportedException {
-//        WorkDay workDay = new WorkDay(start);
-//        workDay.setEnd(end);
-//        ArrayList<Date[]> pauses = new ArrayList<>();
-//        pauses.addAll(this.pauses);
-//        workDay.setPauses(pauses);
-//        return workDay;
-//    }
 public final Pauses getPauses() {
     return pauses;
 }
