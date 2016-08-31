@@ -24,7 +24,7 @@ public class Controller {
     private Observers observers;
     private TimeSheet timeSheet;
 
-    public Controller(final Observers observers, TimeSheet timeSheet) {
+    public Controller(final Observers observers,final TimeSheet timeSheet) {
         this.observers = observers;
         this.timeSheet = timeSheet;
 
