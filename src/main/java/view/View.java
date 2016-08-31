@@ -127,7 +127,7 @@ public class View {
 
     private void printCalculateTime() throws ErrorEvent {
         observers.notifyObservers(new CalculateEvent());
-        System.out.println(timeSheet.getLastWorkDay().getHoursWork() + " hours worked");
+        System.out.printf("%s%.1f%s","\n",timeSheet.getLastWorkDay().getHoursWork()," hours worked\n");
         long milis = EIGHT_HOURS_IN_MILLISECONDS - (long) (timeSheet.getLastWorkDay().getHoursWork() * MILLISECONDS_IN_HOURS);
         System.out.println("8 hours work day will finished at "
                 + Controller.FORMAT.format(new Date(new Date().getTime()
