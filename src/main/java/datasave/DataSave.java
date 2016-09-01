@@ -48,7 +48,7 @@ public class DataSave {
             e.printStackTrace();
         }
     }
-    
+
     private void loadData() {
         File file = new File(FILE_NAME);
         if (file.getAbsoluteFile().exists()) {
