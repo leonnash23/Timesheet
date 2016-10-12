@@ -161,10 +161,11 @@ public class View {
 
     }
 
-    private void printList() {
+    private void printList() throws ErrorEvent {
         if (timeSheet.size() == 0) {
             System.out.println("List is empty.");
         } else {
+            observers.notifyObservers(new CalculateAllEvent());
             for (WorkDay workDay : timeSheet) {
                 System.out.println("Started at: "+Controller.FORMAT.format(workDay.getStart()));
                 if (workDay.getEnd() == null) {

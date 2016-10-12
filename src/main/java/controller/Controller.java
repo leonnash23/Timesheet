@@ -100,14 +100,24 @@ public class Controller {
                 workLong = workDay.getEnd().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
-                    long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
+                    long pauseLong;
+                    if(pause.getEnd()!=null) {
+                        pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
+                    } else {
+                        pauseLong = new Date().getTime() - pause.getStart().getTime();
+                    }
                     workLong -= pauseLong;
                 }
             } else if (workDay == timeSheet.getLastWorkDay()) {
                 workLong = new Date().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
-                    long pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
+                    long pauseLong;
+                    if(pause.getEnd()!=null) {
+                        pauseLong = pause.getEnd().getTime() - pause.getStart().getTime();
+                    } else {
+                        pauseLong = new Date().getTime() - pause.getStart().getTime();
+                    }
                     workLong -= pauseLong;
                 }
             }

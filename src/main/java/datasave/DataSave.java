@@ -1,10 +1,6 @@
 package datasave;
 
-import event.Observers;
-import event.Observer;
-import event.EventTypes;
-import event.Event;
-import event.ErrorEvent;
+import event.*;
 import model.TimeSheet;
 
 import javax.xml.bind.JAXBContext;
@@ -20,9 +16,11 @@ import java.io.File;
 public class DataSave {
     private TimeSheet timeSheet;
     private final String FILE_NAME = "data.xml";
+    private Observers observers;
 
     public DataSave(final TimeSheet timeSheet, final Observers observers) {
         this.timeSheet = timeSheet;
+        this.observers = observers;
         observers.addListners(new Observer() {
             @Override
             public void notifyEvent(Event o) throws ErrorEvent {
@@ -49,11 +47,12 @@ public class DataSave {
         }
     }
 
-    private void loadData() {
+    private void loadData() throws ErrorEvent {
         File file = new File(FILE_NAME);
         if (file.getAbsoluteFile().exists()) {
             timeSheet.addAll(JAXB.unmarshal(file, TimeSheet.class));
         }
+        observers.notifyObservers(new CalculateEvent());
     }
 
 }
