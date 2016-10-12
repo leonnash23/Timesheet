@@ -97,6 +97,7 @@ public class Controller {
     private void calculateHoursWork(final WorkDay workDay) throws ErrorEvent {
             long workLong = 0;
             if (workDay.getEnd() != null) {
+                
                 workLong = workDay.getEnd().getTime() - workDay.getStart().getTime();
                 Pauses pauses = workDay.getPauses();
                 for (Pause pause : pauses) {
